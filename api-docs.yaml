@@ -1,0 +1,129 @@
+openapi: 3.0.1
+info:
+  title: sample application API
+  description: profiles api
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://springdoc.org
+  version: 0.0.1-SNAPSHOT
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+paths:
+  /profiles:
+    get:
+      tags:
+      - profile-controller
+      operationId: findByUserId
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProfileDTO'
+    post:
+      tags:
+      - profile-controller
+      operationId: store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileDTO'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProfileDTO'
+  /profiles/{id}:
+    get:
+      tags:
+      - profile-controller
+      operationId: findByProviderId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProfileDTO'
+    patch:
+      tags:
+      - profile-controller
+      operationId: updateName
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NameDTO'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+        "202":
+          description: Accepted
+components:
+  schemas:
+    ProfileDTO:
+      required:
+      - firstName
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        providerId:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+        email:
+          type: string
+        profileImageURL:
+          type: string
+    NameDTO:
+      required:
+      - first
+      - last
+      type: object
+      properties:
+        first:
+          type: string
+        last:
+          type: string
